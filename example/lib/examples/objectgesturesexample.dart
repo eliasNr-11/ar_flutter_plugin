@@ -10,9 +10,7 @@ import 'package:ar_flutter_plugin/datatypes/node_types.dart';
 import 'package:ar_flutter_plugin/datatypes/hittest_result_types.dart';
 import 'package:ar_flutter_plugin/models/ar_node.dart';
 import 'package:ar_flutter_plugin/models/ar_hittest_result.dart';
-import 'package:flutter/services.dart';
 import 'package:vector_math/vector_math_64.dart';
-import 'dart:math';
 
 class ObjectGesturesWidget extends StatefulWidget {
   ObjectGesturesWidget({Key? key}) : super(key: key);
@@ -101,32 +99,30 @@ class _ObjectGesturesWidgetState extends State<ObjectGesturesWidget> {
       List<ARHitTestResult> hitTestResults) async {
     var singleHitTestResult = hitTestResults.firstWhere(
         (hitTestResult) => hitTestResult.type == ARHitTestResultType.plane);
-    if (singleHitTestResult != null) {
-      var newAnchor =
-          ARPlaneAnchor(transformation: singleHitTestResult.worldTransform);
-      bool? didAddAnchor = await this.arAnchorManager!.addAnchor(newAnchor);
-      if (didAddAnchor!) {
-        this.anchors.add(newAnchor);
-        // Add note to anchor
-        var newNode = ARNode(
-            type: NodeType.webGLB,
-            uri:
-                "https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/Duck/glTF-Binary/Duck.glb",
-            scale: Vector3(0.2, 0.2, 0.2),
-            position: Vector3(0.0, 0.0, 0.0),
-            rotation: Vector4(1.0, 0.0, 0.0, 0.0));
-        bool? didAddNodeToAnchor =
-            await this.arObjectManager!.addNode(newNode, planeAnchor: newAnchor);
-        if (didAddNodeToAnchor!) {
-          this.nodes.add(newNode);
-        } else {
-          this.arSessionManager!.onError("Adding Node to Anchor failed");
-        }
+    var newAnchor =
+        ARPlaneAnchor(transformation: singleHitTestResult.worldTransform);
+    bool? didAddAnchor = await this.arAnchorManager!.addAnchor(newAnchor);
+    if (didAddAnchor!) {
+      this.anchors.add(newAnchor);
+      // Add note to anchor
+      var newNode = ARNode(
+          type: NodeType.webGLB,
+          uri:
+              "https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/Duck/glTF-Binary/Duck.glb",
+          scale: Vector3(0.2, 0.2, 0.2),
+          position: Vector3(0.0, 0.0, 0.0),
+          rotation: Vector4(1.0, 0.0, 0.0, 0.0));
+      bool? didAddNodeToAnchor =
+          await this.arObjectManager!.addNode(newNode, planeAnchor: newAnchor);
+      if (didAddNodeToAnchor!) {
+        this.nodes.add(newNode);
       } else {
-        this.arSessionManager!.onError("Adding Anchor failed");
+        this.arSessionManager!.onError("Adding Node to Anchor failed");
       }
+    } else {
+      this.arSessionManager!.onError("Adding Anchor failed");
     }
-  }
+    }
 
   onPanStarted(String nodeName) {
     print("Started panning node " + nodeName);
@@ -138,8 +134,7 @@ class _ObjectGesturesWidgetState extends State<ObjectGesturesWidget> {
 
   onPanEnded(String nodeName, Matrix4 newTransform) {
     print("Ended panning node " + nodeName);
-    final pannedNode =
-        this.nodes.firstWhere((element) => element.name == nodeName);
+    this.nodes.firstWhere((element) => element.name == nodeName);
 
     /*
     * Uncomment the following command if you want to keep the transformations of the Flutter representations of the nodes up to date
@@ -158,8 +153,7 @@ class _ObjectGesturesWidgetState extends State<ObjectGesturesWidget> {
 
   onRotationEnded(String nodeName, Matrix4 newTransform) {
     print("Ended rotating node " + nodeName);
-    final rotatedNode =
-        this.nodes.firstWhere((element) => element.name == nodeName);
+    this.nodes.firstWhere((element) => element.name == nodeName);
 
     /*
     * Uncomment the following command if you want to keep the transformations of the Flutter representations of the nodes up to date
