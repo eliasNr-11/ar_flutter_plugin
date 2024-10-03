@@ -1,9 +1,9 @@
 import 'dart:math' show sqrt;
 
-import 'package:ar_flutter_plugin/datatypes/config_planedetection.dart';
-import 'package:ar_flutter_plugin/models/ar_anchor.dart';
-import 'package:ar_flutter_plugin/models/ar_hittest_result.dart';
-import 'package:ar_flutter_plugin/utils/json_converters.dart';
+import 'package:my_ar_flutter_plugin/datatypes/config_planedetection.dart';
+import 'package:my_ar_flutter_plugin/models/ar_anchor.dart';
+import 'package:my_ar_flutter_plugin/models/ar_hittest_result.dart';
+import 'package:my_ar_flutter_plugin/utils/json_converters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vector_math/vector_math_64.dart';

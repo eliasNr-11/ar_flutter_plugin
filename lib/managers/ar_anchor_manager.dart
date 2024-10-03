@@ -1,4 +1,4 @@
-import 'package:ar_flutter_plugin/models/ar_anchor.dart';
+import 'package:my_ar_flutter_plugin/models/ar_anchor.dart';
 import 'package:flutter/services.dart';
 
 // Type definitions to enforce a consistent use of the API
